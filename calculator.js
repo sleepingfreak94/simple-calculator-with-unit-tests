@@ -1,4 +1,3 @@
-// calculator.js
 export function updateScreenValue(screen, value) {
     screen.value += value;
   }
@@ -11,11 +10,17 @@ export function updateScreenValue(screen, value) {
     if (screen.value === "") {
       screen.value = "Please enter";
     } else {
-      try {
-        let sanitizedInput = screen.value.replace(/[\+\-\*\/\.]$/, '');
-        let answer = eval(sanitizedInput);
-        screen.value = answer;
-      } catch (error) {
+      // Basic validation to ensure the expression is valid
+      const isValidExpression = /^[0-9+\-*/.]+$/.test(screen.value) && !/[+\-*/.]$/.test(screen.value);
+  
+      if (isValidExpression) {
+        try {
+          let answer = eval(screen.value);
+          screen.value = answer;
+        } catch (error) {
+          screen.value = "Error";
+        }
+      } else {
         screen.value = "Error";
       }
     }
